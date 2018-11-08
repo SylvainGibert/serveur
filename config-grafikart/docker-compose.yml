@@ -1,0 +1,57 @@
+## Configuration Apache
+web:
+   restart: always
+   build: apache
+   ports:
+      - "80:80"
+   volumes:
+      - /var/www:/var/www/local.dev
+      - /var/www/docker/php.ini:/etc/php5/apache2/conf.d/30-custom.ini
+      - /var/www/docker/sites:/etc/apache2/sites-enabled
+   environment:
+      - ALLOW_OVERRIDE=true
+   links:
+      - db:db
+      - maildev:maildev
+      - blackfire:blackfire
+
+blackfire:
+   restart: always
+   image: blackfire/blackfire
+   environment:
+      - BLACKFIRE_SERVER_ID=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      - BLACKFIRE_SERVER_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+## Configuration Nginx + PHP
+#web:
+# restart: always
+# image: nginx
+# ports:
+#  - "80:80"
+# volumes:
+#  - /var/www/docker/nginx:/etc/nginx/conf.d
+#  - /var/www:/var/www/local.dev
+# links:
+#  - php:php
+#php:
+# build: php
+# restart: always
+# volumes:
+#  - /var/www:/var/www/local.dev
+#  - /var/www/docker/php.ini:/usr/local/etc/php/php.ini
+# links:
+#  - db:db
+
+db:
+ image: mysql
+ restart: always
+ volumes:
+  - /var/lib/boot2docker/mysql:/var/lib/mysql
+ environment:
+  - MYSQL_ROOT_PASSWORD=root
+
+maildev:
+ restart: always
+ image: djfarrelly/maildev
+ ports:
+  - "1080:80"
