@@ -1,4 +1,4 @@
-/************************************ # SETUP DE MON RASPBERRY PI 3 ************************************/ 
+# SETUP DE MON RASPBERRY PI 3
 
 ## INTRODUCTION :
 Ce setup me permet de conteneuriser mon serveur de développement perso
